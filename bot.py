@@ -7,6 +7,7 @@ from os import popen
 from os import system
 from time import time
 import base64
+from os import getcwd
 class EchoBot(ClientXMPP):
 
     def __init__(self, jid, password):
@@ -52,7 +53,7 @@ class EchoBot(ClientXMPP):
             if(txt=="拍照"):
                 retxt="正在拍照"
                 timestamp=int(time())
-                pic_file_name="%s.jpg" % (timestamp)
+                pic_file_name="%s/%s.jpg" % (getcwd(),timestamp)
                 system("fswebcam %s" % (pic_file_name))
                 base64_content=base64.b64encode(open(pic_file_name).read())
                 img_url="data:image/x-icon;base64,%s" % (base64_content)
@@ -77,6 +78,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(levelname)-8s %(message)s')
 
-    xmpp = EchoBot('bot@semantic.semioe.com', '123456')
+    xmpp = EchoBot('id@gpiopi.com', 'password')
     xmpp.connect()
     xmpp.process(block=True)
