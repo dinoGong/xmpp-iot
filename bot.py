@@ -8,6 +8,11 @@ from os import system
 from time import time
 import base64
 from os import getcwd
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
+#GPIO.setmode(GPIO.BCM)
+pin=12
+GPIO.setup(pin,GPIO.OUT)
 class EchoBot(ClientXMPP):
 
     def __init__(self, jid, password):
@@ -53,17 +58,20 @@ class EchoBot(ClientXMPP):
             if(txt=="拍照"):
                 retxt="正在拍照"
                 timestamp=int(time())
-                pic_file_name="%s/%s.jpg" % (getcwd(),timestamp)
+                pic_file_name="/home/pi/pics/%s.jpg" % (timestamp)
                 system("fswebcam %s" % (pic_file_name))
-                base64_content=base64.b64encode(open(pic_file_name).read())
-                img_url="data:image/x-icon;base64,%s" % (base64_content)
+                #base64_content=base64.b64encode(open(pic_file_name).read())
+                img_url=popen("curl -F 'file=@%s;filename=%s.jpg;type=image/jpeg' http://47.94.252.38:3000/upload" %(pic_file_name,timestamp)).read()
+                #img_url="data:image/x-icon;base64,%s" % (base64_content)
                 #retxt="<image xmlns='http://mangga.me/protocol/image' type='image/jpeg'>%s</image>" % (base64_content)
-                retxt="%s" % (img_url)
+                retxt="http://47.94.252.38:3000%s" % (img_url)
             if(txt=="关机"):
                 retxt="正在关机"
             if(txt=="开灯"):
+                GPIO.output(pin,GPIO.HIGH)
                 retxt="已开启"
             if(txt=="关灯"):
+                GPIO.output(pin,GPIO.LOW)
                 retxt="已关闭"
             if(txt[0:1]=="#"):
                 cmd=txt[1:len(txt)]
@@ -78,6 +86,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(levelname)-8s %(message)s')
 
-    xmpp = EchoBot('id@gpiopi.com', 'password')
+    xmpp = EchoBot('bot@gpiopi.com', '123456')
     xmpp.connect()
     xmpp.process(block=True)
+
