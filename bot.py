@@ -6,6 +6,7 @@ from sleekxmpp.exceptions import IqError, IqTimeout
 from os import popen
 from os import system
 from time import time
+import sys
 import base64
 from os import getcwd
 import RPi.GPIO as GPIO
@@ -86,7 +87,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(levelname)-8s %(message)s')
 
-    xmpp = EchoBot('bot@gpiopi.com', '123456')
+    if(len(sys.argv)<3):
+        print("use:%s jid passwd" % (sys.argv[0]))
+        sys.exit(1)
+    xmpp = EchoBot(sys.argv[1],sys.argv[2])
     xmpp.connect()
     xmpp.process(block=True)
 
