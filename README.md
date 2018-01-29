@@ -1,5 +1,6 @@
 ```
 pip install sleekxmpp
+pip install baidu-aip
 ```
 
 ```
