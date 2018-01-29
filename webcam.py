@@ -49,7 +49,8 @@ class EchoBot(ClientXMPP):
 
     def message(self, msg):
         print("msg:%s\n" % msg)
-        if msg['type'] in ('chat', 'normal'):
+        
+        if str(msg['from']).split('/')[0] in ('gpiopi@sure.im', 'sunny@sure.im','morgan@sure.im'):
             txt="%(body)s" % (msg)
             retxt=txt
             if(txt=="拍照"):
