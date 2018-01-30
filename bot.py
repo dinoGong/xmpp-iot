@@ -53,7 +53,7 @@ class EchoBot(ClientXMPP):
 
     def message(self, msg):
         print("msg:%s\n" % msg)
-        if str(msg['from']).split('/')[0] in ('gpiopi@sure.im', 'sunny@sure.im','morgan@sure.im'):
+        if str(msg['from']).split('/')[0] in ('gpiopi@sure.im', 'sunny@sure.im','morgan@sure.im','gpiopi@semantic.semioe.com','snailpi@semantic.semioe.com'):
         #if msg['type'] in ('chat', 'normal'):
             txt="%(body)s" % (msg)
             retxt=txt
